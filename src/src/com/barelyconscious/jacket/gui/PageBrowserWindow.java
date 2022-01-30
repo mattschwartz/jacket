@@ -39,8 +39,11 @@ public class PageBrowserWindow extends BasicWindow {
         content.addComponent(tabbedPanel);
         content.addComponent(bottomPanel);
 
+        Panel monthView = new MonthViewPanel();
+        content.addComponent(monthView);
+
         setComponent(content);
-        setFixedSize(initialSize);
+//        setFixedSize(initialSize);
     }
 
     private int selectedYear;
@@ -57,11 +60,11 @@ public class PageBrowserWindow extends BasicWindow {
 
         monthSelector.clearItems();
         dal.listMonthsForYear(selectedYear).forEach(t -> monthSelector.addItem(t));
-        monthSelector.setSelectedIndex(0);
+//        monthSelector.setSelectedIndex(0);
 
         daySelector.clearItems();
         dal.listDaysForMonthAndYear(selectedYear, selectedMonth).forEach(t -> daySelector.addItem(t));
-        daySelector.setSelectedIndex(0);
+//        daySelector.setSelectedIndex(0);
     }
 
     private void onMonthChanged(int selectedIndex, int previousSelection, boolean changedByUserInteraction) {
@@ -73,7 +76,7 @@ public class PageBrowserWindow extends BasicWindow {
 
         daySelector.clearItems();
         dal.listDaysForMonthAndYear(selectedYear, selectedMonth).forEach(t -> daySelector.addItem(t));
-        daySelector.setSelectedIndex(0);
+//        daySelector.setSelectedIndex(0);
     }
 
     private void onDayChanged(int selectedIndex, int previousSelection, boolean changedByUserInteraction) {
@@ -122,15 +125,5 @@ public class PageBrowserWindow extends BasicWindow {
         res.addComponent(daySelector);
 
         return res;
-    }
-
-    private void updateSelection() {
-        System.out.println("Updated year: " + selectedYear + " update month: " + selectedMonth + " updated day: "+ selectedDay);
-
-        yearSelector.setSelectedItem(selectedYear);
-        monthSelector.setSelectedItem(selectedMonth);
-        daySelector.setSelectedItem(selectedDay);
-
-
     }
 }
