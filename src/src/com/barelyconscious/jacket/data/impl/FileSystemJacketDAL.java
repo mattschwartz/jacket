@@ -32,10 +32,16 @@ public final class FileSystemJacketDAL implements JacketDAL {
                 .year(2019).month(2).day(8)
                 .build(),
             JacketPage.builder()
-                .year(2020).month(1).day(1)
+                .year(2020).month(3).day(9)
                 .build(),
             JacketPage.builder()
-                .year(2021).month(1).day(1)
+                .year(2021).month(4).day(10)
+                .build(),
+            JacketPage.builder()
+                .year(2021).month(4).day(11)
+                .build(),
+            JacketPage.builder()
+                .year(2021).month(4).day(12)
                 .build());
     }
 
@@ -74,7 +80,7 @@ public final class FileSystemJacketDAL implements JacketDAL {
     public List<Integer> listDaysForMonthAndYear(int year, int month) {
         return testData.stream()
             .filter(t -> t.getYear() == year && t.getMonth() == month)
-            .map(JacketPage::getMonth)
+            .map(JacketPage::getDay)
             .distinct()
             .collect(Collectors.toList());
     }

@@ -81,7 +81,7 @@ public class PageBrowserWindow extends BasicWindow {
             return;
         }
         selectedDay = dal.listDaysForMonthAndYear(selectedYear, selectedMonth).get(selectedIndex);
-        updateSelection();
+        System.out.println("Selected: " + selectedYear + "/" + selectedMonth + "/" + selectedDay);
     }
 
     private Panel yearPanel() {
