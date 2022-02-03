@@ -1,44 +1,33 @@
 package com.barelyconscious.jacket.guice;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
-
-import java.io.IOException;
+import com.barelyconscious.jacket.cli.*;
+import com.barelyconscious.jacket.data.*;
+import com.barelyconscious.jacket.data.impl.*;
+import com.google.inject.*;
+import picocli.*;
 
 public class AppModule extends AbstractModule {
 
-    private final boolean isCursorVisible;
+    @Provides
+    @Singleton
+    CommandLine providesCommandLine(final JacketCLI jacketCLI) {
+        var commandLine = new CommandLine(jacketCLI);
 
-    public AppModule(final boolean isCursorVisible) {
-        this.isCursorVisible = isCursorVisible;
+        commandLine.setAbbreviatedSubcommandsAllowed(true);
+        commandLine.setAbbreviatedOptionsAllowed(true);
+
+        return commandLine;
     }
 
     @Provides
     @Singleton
-    Screen providesScreen(Terminal terminal) {
-        try {
-            return new TerminalScreen(terminal);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    JacketCLI providesJacketCLI() {
+        return new JacketCLI();
     }
 
     @Provides
     @Singleton
-    Terminal providesTerminal() {
-        try {
-            Terminal terminal = new DefaultTerminalFactory().createTerminal();
-            terminal.enterPrivateMode();
-            terminal.clearScreen();
-            terminal.setCursorVisible(false);
-            return terminal;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    JacketDAL providesJacketDAL() {
+        return new FileSystemJacketDAL();
     }
 }
