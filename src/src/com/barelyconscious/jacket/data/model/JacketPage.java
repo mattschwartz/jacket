@@ -1,19 +1,29 @@
 package com.barelyconscious.jacket.data.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 @Getter
 @AllArgsConstructor
 @Builder
+@ToString
 public class JacketPage {
 
-    private final int year;
-    private final int month;
-    private final int day;
+    public int getYear() {
+        return date.getYear();
+    }
+
+    public int getMonth() {
+        return date.getMonthValue();
+    }
+
+    public int getDay() {
+        return date.getDayOfMonth();
+    }
+
+    private final LocalDate date;
     private final List<JacketTask> tasks;
 }

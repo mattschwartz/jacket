@@ -8,7 +8,9 @@ import java.io.*;
 
 public class InteractiveTerminalModule extends AbstractModule {
 
-    public InteractiveTerminalModule() {
+    @Override
+    protected void configure() {
+        super.configure();
         install(new AppModule());
     }
 

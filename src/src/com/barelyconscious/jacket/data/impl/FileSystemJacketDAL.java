@@ -1,14 +1,12 @@
 package com.barelyconscious.jacket.data.impl;
 
-import com.barelyconscious.jacket.data.JacketDAL;
-import com.barelyconscious.jacket.data.model.GetJacketPagesRequest;
-import com.barelyconscious.jacket.data.model.GetJacketPagesResponse;
-import com.barelyconscious.jacket.data.model.JacketPage;
-import com.google.common.collect.Lists;
+import com.barelyconscious.jacket.data.*;
+import com.barelyconscious.jacket.data.model.*;
+import com.google.common.collect.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.*;
+import java.util.*;
+import java.util.stream.*;
 
 public final class FileSystemJacketDAL implements JacketDAL {
 
@@ -17,32 +15,42 @@ public final class FileSystemJacketDAL implements JacketDAL {
     public FileSystemJacketDAL() {
         testData = Lists.newArrayList(
             JacketPage.builder()
-                .year(2019).month(1).day(1)
+                .date(LocalDate.of(2019, 1, 1))
                 .build(),
             JacketPage.builder()
-                .year(2019).month(1).day(2)
+                .date(LocalDate.of(2019, 1, 2))
                 .build(),
             JacketPage.builder()
-                .year(2019).month(1).day(3)
+                .date(LocalDate.of(2019, 1, 3))
                 .build(),
             JacketPage.builder()
-                .year(2019).month(2).day(7)
+                .date(LocalDate.of(2019, 2, 7))
                 .build(),
             JacketPage.builder()
-                .year(2019).month(2).day(8)
+                .date(LocalDate.of(2019, 2, 8))
                 .build(),
             JacketPage.builder()
-                .year(2020).month(3).day(9)
+                .date(LocalDate.of(2020, 3, 9))
                 .build(),
             JacketPage.builder()
-                .year(2021).month(4).day(10)
+                .date(LocalDate.of(2021, 4, 10))
                 .build(),
             JacketPage.builder()
-                .year(2021).month(4).day(11)
+                .date(LocalDate.of(2021, 4, 11))
                 .build(),
             JacketPage.builder()
-                .year(2021).month(4).day(12)
+                .date(LocalDate.of(2021, 4, 12))
                 .build());
+    }
+
+    @Override
+    public GetJacketPageResponse getJacketPage(final GetJacketPageRequest request) {
+        for (final var page : testData) {
+            if (page.getDate().isEqual(request.exactDate())) {
+                return new GetJacketPageResponse(page);
+            }
+        }
+        return new GetJacketPageResponse(null);
     }
 
     @Override

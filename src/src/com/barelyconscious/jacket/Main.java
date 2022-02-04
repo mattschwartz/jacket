@@ -20,7 +20,8 @@ public class Main {
             "task",
             "v",
             "-d",
-            "d-10m4y-3"
+            "2019-01-01"
+//            "d-10m4y-3"
         };
         System.out.println("$ jacket " + Arrays.toString(_args).replace(", ", " ").replace("[", "").replace("]", ""));
         commandLine.execute(_args);

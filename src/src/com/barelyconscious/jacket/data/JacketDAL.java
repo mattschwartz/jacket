@@ -1,11 +1,12 @@
 package com.barelyconscious.jacket.data;
 
-import com.barelyconscious.jacket.data.model.GetJacketPagesRequest;
-import com.barelyconscious.jacket.data.model.GetJacketPagesResponse;
+import com.barelyconscious.jacket.data.model.*;
 
 import java.util.List;
 
 public interface JacketDAL {
+
+    GetJacketPageResponse getJacketPage(GetJacketPageRequest request);
 
     GetJacketPagesResponse getJacketPages(GetJacketPagesRequest request);
 
