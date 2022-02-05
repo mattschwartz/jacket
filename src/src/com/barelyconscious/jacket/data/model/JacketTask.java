@@ -1,8 +1,9 @@
 package com.barelyconscious.jacket.data.model;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Builder
 public class JacketTask {
     private JacketTaskType type;
     private boolean isCompleted;

@@ -16,6 +16,12 @@ public final class FileSystemJacketDAL implements JacketDAL {
         testData = Lists.newArrayList(
             JacketPage.builder()
                 .date(LocalDate.of(2019, 1, 1))
+                .tasks(Lists.newArrayList(
+                    JacketTask.builder()
+                        .type(JacketTaskType.TASK)
+                        .text("Do a thing and this is a really long paragraph that says a lot of things but no one really cares about it we're just wrapping some words here.")
+                        .build()
+                ))
                 .build(),
             JacketPage.builder()
                 .date(LocalDate.of(2019, 1, 2))
