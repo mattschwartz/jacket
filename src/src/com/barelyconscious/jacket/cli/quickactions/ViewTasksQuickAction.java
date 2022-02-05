@@ -2,7 +2,6 @@ package com.barelyconscious.jacket.cli.quickactions;
 
 import com.barelyconscious.jacket.common.*;
 import com.barelyconscious.jacket.data.*;
-import com.barelyconscious.jacket.data.model.*;
 import com.barelyconscious.jacket.gui.*;
 import com.barelyconscious.jacket.guice.*;
 import lombok.*;
@@ -34,9 +33,8 @@ public class ViewTasksQuickAction extends QuickAction {
         final var injector = createInjector(new AppModule());
         final var dal = injector.getInstance(JacketDAL.class);
         final LocalDate date = DatePickerUtils.parseDateString(dateStr);
-        final var page = dal.getJacketPage(new GetJacketPageRequest(date));
 
-        new TasksForDayView().printPage(page.jacketPage());
+        new TasksForDayView(dal).startOnPage(date);
     }
 
 }

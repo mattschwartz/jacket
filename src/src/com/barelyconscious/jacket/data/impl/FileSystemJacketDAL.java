@@ -2,68 +2,58 @@ package com.barelyconscious.jacket.data.impl;
 
 import com.barelyconscious.jacket.data.*;
 import com.barelyconscious.jacket.data.model.*;
-import com.google.common.collect.*;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.datatype.jsr310.*;
+import lombok.*;
 
+import java.io.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
 
 public final class FileSystemJacketDAL implements JacketDAL {
 
-    private final List<JacketPage> testData;
+    private final List<JacketPage> data;
+    private final ObjectMapper objectMapper;
 
     public FileSystemJacketDAL() {
-        testData = Lists.newArrayList(
-            JacketPage.builder()
-                .date(LocalDate.of(2019, 1, 1))
-                .tasks(Lists.newArrayList(
-                    JacketTask.builder()
-                        .type(JacketTaskType.TASK)
-                        .text("Do a thing and this is a really long paragraph that says a lot of things but no one really cares about it we're just wrapping some words here.")
-                        .build()
-                ))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2019, 1, 2))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2019, 1, 3))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2019, 2, 7))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2019, 2, 8))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2020, 3, 9))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2021, 4, 10))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2021, 4, 11))
-                .build(),
-            JacketPage.builder()
-                .date(LocalDate.of(2021, 4, 12))
-                .build());
+        try {
+            objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            data = loadData();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String DB_FILEPATH = "C:\\Users\\cassiius\\Documents\\github\\bulletsh\\data\\sample_data.json";
+
+    @Data
+    private static class JacketPages {
+        private List<JacketPage> pages;
+    }
+
+    private List<JacketPage> loadData() throws IOException {
+        var jacketPages = objectMapper.readValue(new File(DB_FILEPATH), JacketPages.class);
+        System.out.println("Successfully loaded data=" + jacketPages);
+        return jacketPages.pages;
     }
 
     @Override
-    public GetJacketPageResponse getJacketPage(final GetJacketPageRequest request) {
-        for (final var page : testData) {
-            if (page.getDate().isEqual(request.exactDate())) {
-                return new GetJacketPageResponse(page);
+    public JacketPage getJacketPage(final LocalDate localDate) {
+        for (final var page : data) {
+            if (page.getDate().isEqual(localDate)) {
+                return page;
             }
         }
-        return new GetJacketPageResponse(null);
+        return null;
     }
 
     @Override
     public GetJacketPagesResponse getJacketPages(final GetJacketPagesRequest request) {
         final List<JacketPage> results = new ArrayList<>();
 
-        for (final JacketPage page : testData) {
+        for (final JacketPage page : data) {
             boolean betweenYear = request.getBetweenYears().inBetween(page.getYear());
             boolean betweenMonth = request.getBetweenMonths().inBetween(page.getMonth());
             boolean betweenDay = request.getBetweenDays().inBetween(page.getDay());
@@ -78,12 +68,12 @@ public final class FileSystemJacketDAL implements JacketDAL {
 
     @Override
     public List<Integer> listYears() {
-        return testData.stream().map(JacketPage::getYear).distinct().collect(Collectors.toList());
+        return data.stream().map(JacketPage::getYear).distinct().collect(Collectors.toList());
     }
 
     @Override
     public List<Integer> listMonthsForYear(int year) {
-        return testData.stream()
+        return data.stream()
             .filter(t -> t.getYear() == year)
             .map(JacketPage::getMonth)
             .distinct()
@@ -92,7 +82,7 @@ public final class FileSystemJacketDAL implements JacketDAL {
 
     @Override
     public List<Integer> listDaysForMonthAndYear(int year, int month) {
-        return testData.stream()
+        return data.stream()
             .filter(t -> t.getYear() == year && t.getMonth() == month)
             .map(JacketPage::getDay)
             .distinct()

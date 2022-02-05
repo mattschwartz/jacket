@@ -6,10 +6,9 @@ import lombok.*;
 import java.time.*;
 import java.util.*;
 
-@Getter
+@Data
 @AllArgsConstructor
-@Builder
-@ToString
+@NoArgsConstructor
 public class JacketPage {
 
     public int getYear() {
@@ -24,6 +23,6 @@ public class JacketPage {
         return date.getDayOfMonth();
     }
 
-    private final LocalDate date;
-    private final List<JacketTask> tasks;
+    private LocalDate date;
+    private List<JacketTask> tasks;
 }
