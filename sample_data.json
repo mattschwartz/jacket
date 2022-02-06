@@ -1,0 +1,83 @@
+{
+    "pages": [
+        {
+            "date": "2022-01-20",
+            "tasks": [
+                {
+                    "type": "TASK",
+                    "text": "This task was done today",
+                    "completed": true,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                }
+            ]
+        },
+        {
+            "date": "2022-01-21",
+            "tasks": [
+                {
+                    "type": "TASK",
+                    "text": "This task was done",
+                    "completed": true,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                },
+                {
+                    "type": "TASK",
+                    "text": "This task was pushed to tomorrow",
+                    "completed": false,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                },
+                {
+                    "type": "TASK",
+                    "text": "This task was done, too",
+                    "completed": true,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                },
+                {
+                    "type": "TASK",
+                    "text": "This task was cancelled",
+                    "completed": false,
+                    "cancelled": true,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                },
+                {
+                    "type": "NOTE",
+                    "text": "Just a note",
+                    "completed": true,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                }
+            ]
+        },
+        {
+            "date": "2022-01-22",
+            "tasks": [
+                {
+                    "type": "TASK",
+                    "text": "Something to do",
+                    "completed": false,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                },
+                {
+                    "type": "TASK",
+                    "text": "Another thing to do",
+                    "completed": false,
+                    "cancelled": false,
+                    "migratedForward": false,
+                    "migratedBackward": false
+                }
+            ]
+        }
+    ]
+}
