@@ -5,7 +5,6 @@ import com.barelyconscious.jacket.common.gfx.components.*;
 import com.barelyconscious.jacket.data.*;
 import com.barelyconscious.jacket.data.model.*;
 import com.googlecode.lanterna.*;
-import com.googlecode.lanterna.graphics.*;
 import com.googlecode.lanterna.input.*;
 import com.googlecode.lanterna.screen.*;
 import com.googlecode.lanterna.terminal.*;
@@ -34,7 +33,7 @@ public class TasksForDayView {
     private final char EDIT = 'e';
     private final char HELP = 'h';
 
-    private boolean isHelpVisible = false;
+    private boolean isHelpVisible = true;
 
     public TasksForDayView(final JacketDAL jacketDAL) {
         checkArgument(jacketDAL != null, "jacketDAL is null");
@@ -57,6 +56,15 @@ public class TasksForDayView {
 
                     final KeyStroke keyStroke = screen.readInput();
 
+                    if (keyStroke.getKeyType() == KeyType.EOF) {
+                        break;
+                    }
+
+                    if (keyStroke.getCharacter() == null) {
+                        System.out.println("Ignoring: " + keyStroke);
+                        continue;
+                    }
+
                     datePointer = switch (keyStroke.getCharacter()) {
                         case DAY_FWD -> datePointer.plusDays(1);
                         case DAY_BWD -> datePointer.plusDays(-1);
@@ -72,7 +80,7 @@ public class TasksForDayView {
                     if (keyStroke.getCharacter() == EDIT) {
                         System.out.println("Edit pressed");
                     }
-                    if (keyStroke.getCharacter() == HELP){
+                    if (keyStroke.getCharacter() == HELP) {
                         isHelpVisible = !isHelpVisible;
                     }
                 }
@@ -96,8 +104,6 @@ public class TasksForDayView {
         final var textGraphics = screen.newTextGraphics();
         textGraphics.setForegroundColor(THEME_BLUE);
         screen.clear();
-        drawFrame(terminal, textGraphics);
-
         final var date = page.getDate();
 
         TextWindow.builder()
@@ -162,11 +168,13 @@ public class TasksForDayView {
                 .textGraphics(textGraphics)
                 .terminal(terminal)
                 .startingAtPos(new TerminalPosition(
-                    4,
-                    termSize.getRows() - 7
+                    0,
+                    termSize.getRows() - 4
                 ))
-                .windowWidth(termSize.getColumns() - 8)
-                .windowHeight(6)
+                .windowWidth(termSize.getColumns() - 1)
+                .windowHeight(3)
+                .title(" extended help ")
+                .isCentered(true)
                 .content(helpString)
                 .build()
                 .draw();
@@ -179,19 +187,5 @@ public class TasksForDayView {
         }
 
         screen.refresh();
-    }
-
-    private void drawFrame(final Terminal terminal, final TextGraphics textGraphics) throws IOException {
-        final var terminalSize = terminal.getTerminalSize();
-
-        final var startPos = new TerminalPosition(0, 0);
-        final var width = terminalSize.getColumns() - 2;
-        final var height = terminalSize.getRows() - 1;
-
-        ShapeUtils.drawBox(
-            textGraphics,
-            startPos,
-            width,
-            height);
     }
 }

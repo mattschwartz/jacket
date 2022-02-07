@@ -27,7 +27,7 @@ public final class ShapeUtils {
         // Draw top/bottom horizontal bars
         {
             final TerminalPosition topBarEndPos = startPos
-                .withRelativeColumn(width-2);
+                .withRelativeColumn(width);
 
             final TerminalPosition bottomBarStartPos = startPos
                 .withRelativeRow(height);
@@ -46,7 +46,7 @@ public final class ShapeUtils {
             var topLeftPos = startPos;
             var topRightPos = startPos.withRelativeColumn(width);
 
-            for (int x = startPos.getRow(); x < height; ++x) {
+            for (int x = topLeftPos.getRow(); x < startPos.getRow() + height; ++x) {
                 topLeftPos = topLeftPos.withRelativeRow(1);
                 topRightPos = topRightPos.withRelativeRow(1);
 
@@ -61,11 +61,11 @@ public final class ShapeUtils {
                 startPos,
                 Symbols.DOUBLE_LINE_TOP_LEFT_CORNER);
             textGraphics.setCharacter(
-                startPos.withRelativeColumn(width-2),
+                startPos.withRelativeColumn(width),
                 Symbols.DOUBLE_LINE_TOP_RIGHT_CORNER);
 
             textGraphics.setCharacter(
-                startPos.withRelativeRow(height-1),
+                startPos.withRelativeRow(height),
                 Symbols.DOUBLE_LINE_BOTTOM_LEFT_CORNER);
             textGraphics.setCharacter(
                 startPos.withRelativeColumn(width).withRelativeRow(height),

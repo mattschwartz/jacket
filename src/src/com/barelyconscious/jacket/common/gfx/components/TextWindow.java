@@ -9,8 +9,6 @@ import lombok.*;
 
 import java.io.*;
 
-import static com.barelyconscious.jacket.common.gfx.JacketColors.THEME_ORANGE;
-
 @Builder
 public class TextWindow {
 
@@ -34,8 +32,8 @@ public class TextWindow {
         if (isFullScreen) {
             termSize = terminal.getTerminalSize();
             startPos = new TerminalPosition(0, 0);
-            windowWidth = termSize.getColumns();
-            windowHeight = termSize.getRows();
+            windowWidth = termSize.getColumns()-1;
+            windowHeight = termSize.getRows()-1;
         } else if (startingAtPos != null) {
             startPos = startingAtPos;
             windowWidth = this.windowWidth;
@@ -44,29 +42,23 @@ public class TextWindow {
             throw new RuntimeException("either isFullScreen or startingAtPos must be specified");
         }
 
+        var prevFb = textGraphics.getForegroundColor();
+        if (content != null) {
+//            textGraphics.setForegroundColor(THEME_ORANGE);
+        }
         ShapeUtils.drawBox(
             textGraphics,
             startPos,
             windowWidth,
             windowHeight);
+        textGraphics.setForegroundColor(prevFb);
 
-        if (title != null) {
-            if (isCentered) {
-                TextUtils.drawCenterString(
-                    textGraphics,
-                    startPos,
-                    windowWidth,
-                    title);
-            } else {
-                textGraphics.putString(
-                    startPos,
-                    title);
-            }
-        }
+        renderTitle(startPos, windowWidth);
+        renderContent(startPos);
+    }
+
+    private void renderContent(final TerminalPosition startPos) {
         if (content != null) {
-            var prevBgColor = textGraphics.getBackgroundColor();
-            textGraphics.setBackgroundColor(THEME_ORANGE);
-
             var contentStart = startPos.withRelativeColumn(1).withRelativeRow(1);
             var lines = content.split("\n");
 
@@ -82,7 +74,22 @@ public class TextWindow {
                 }
                 contentStart = contentStart.withRelativeRow(1);
             }
-            textGraphics.setBackgroundColor(prevBgColor);
+        }
+    }
+
+    private void renderTitle(final TerminalPosition startPos, final int windowWidth) {
+        if (title != null) {
+            if (isCentered) {
+                TextUtils.drawCenterString(
+                    textGraphics,
+                    startPos,
+                    windowWidth,
+                    title);
+            } else {
+                textGraphics.putString(
+                    startPos,
+                    title);
+            }
         }
     }
 }
