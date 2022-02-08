@@ -2,6 +2,7 @@ package com.barelyconscious.jacket.common.gfx.components;
 
 
 import com.barelyconscious.jacket.common.gfx.*;
+import com.barelyconscious.jacket.common.gfx.windows.*;
 import com.googlecode.lanterna.*;
 import com.googlecode.lanterna.graphics.*;
 import com.googlecode.lanterna.terminal.*;
@@ -10,7 +11,7 @@ import lombok.*;
 import java.io.*;
 
 @Builder
-public class TextWindow {
+public class TextWindow extends ATextWindow {
 
     private final String title;
     private final String content;
