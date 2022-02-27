@@ -1,9 +1,39 @@
 package com.barelyconscious.jacket.common;
 
 import java.time.*;
+import java.util.Objects;
 import java.util.regex.*;
 
-public record RelativeDate(Matcher matcher) {
+public final class RelativeDate {
+    private final Matcher matcher;
+
+    RelativeDate(Matcher matcher) {
+        this.matcher = matcher;
+    }
+
+    public Matcher matcher() {
+        return matcher;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (RelativeDate) obj;
+        return Objects.equals(this.matcher, that.matcher);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(matcher);
+    }
+
+    @Override
+    public String toString() {
+        return "RelativeDate[" +
+            "matcher=" + matcher + ']';
+    }
+
     private enum ParseRelativeDateDimension {
         d,
         m,

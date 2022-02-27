@@ -1,15 +1,21 @@
 package com.barelyconscious.jacket.data.impl;
 
+import com.barelyconscious.jacket.common.OSHelper;
 import com.barelyconscious.jacket.data.*;
 import com.barelyconscious.jacket.data.model.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
 import lombok.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
+
+import static com.barelyconscious.jacket.common.OSHelper.SYSTEM_OS;
 
 public final class FileSystemJacketDAL implements JacketDAL {
 
@@ -26,7 +32,11 @@ public final class FileSystemJacketDAL implements JacketDAL {
         }
     }
 
-    private static String DB_FILEPATH = "C:\\Users\\cassiius\\Documents\\github\\bulletsh\\data\\sample_data.json";
+    private static final String DB_FILEPATH = switch (SYSTEM_OS) {
+        case WINDOWS -> "%APPDATA%";
+        case MAC_OS_X, LINUX -> "/tmp/";
+        default -> throw new OSHelper.SystemNotSupportedException("System not supported. OS name=" + SYSTEM_OS);
+    } + "jacketdb.json";
 
     @Data
     private static class JacketPages {
@@ -34,6 +44,22 @@ public final class FileSystemJacketDAL implements JacketDAL {
     }
 
     private List<JacketPage> loadData() throws IOException {
+        var file = new File(DB_FILEPATH);
+        if (!file.exists()) {
+            if (!file.createNewFile()) {
+                throw new IOException("Failed to create file=" + DB_FILEPATH);
+            } else {
+                return new ArrayList<>();
+            }
+        }
+
+        try (var inputStream = new FileInputStream(file)) {
+            final var jsonString = IOUtils.toString(inputStream, Charset.defaultCharset());
+            if (StringUtils.isBlank(jsonString)) {
+                return new ArrayList<>();
+            }
+        }
+
         var jacketPages = objectMapper.readValue(new File(DB_FILEPATH), JacketPages.class);
         System.out.println("Successfully loaded data=" + jacketPages);
         return jacketPages.pages;
