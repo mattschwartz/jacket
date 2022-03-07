@@ -4,11 +4,13 @@ import com.googlecode.lanterna.graphics.*;
 import com.googlecode.lanterna.terminal.*;
 import lombok.experimental.*;
 
+import java.io.IOException;
+
 @SuperBuilder
-public class ATextWindow {
+public abstract class ATextWindow {
 
     protected final TextGraphics textGraphics;
     protected final Terminal terminal;
 
-
+    public abstract void draw() throws IOException;
 }

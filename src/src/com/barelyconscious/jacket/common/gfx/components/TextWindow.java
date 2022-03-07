@@ -10,6 +10,8 @@ import lombok.experimental.*;
 
 import java.io.*;
 
+import static com.barelyconscious.jacket.common.gfx.JacketColors.THEME_ORANGE;
+
 @SuperBuilder
 public class TextWindow extends ATextWindow {
 
@@ -24,6 +26,7 @@ public class TextWindow extends ATextWindow {
     private final TextGraphics textGraphics;
     private final Terminal terminal;
 
+    @Override
     public void draw() throws IOException {
         TerminalPosition startPos;
         final int windowWidth;
@@ -45,7 +48,7 @@ public class TextWindow extends ATextWindow {
 
         var prevFb = textGraphics.getForegroundColor();
         if (content != null) {
-//            textGraphics.setForegroundColor(THEME_ORANGE);
+            textGraphics.setForegroundColor(THEME_ORANGE);
         }
         ShapeUtils.drawBox(
             textGraphics,

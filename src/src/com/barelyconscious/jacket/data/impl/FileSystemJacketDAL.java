@@ -61,7 +61,6 @@ public final class FileSystemJacketDAL implements JacketDAL {
         }
 
         var jacketPages = objectMapper.readValue(new File(DB_FILEPATH), JacketPages.class);
-        System.out.println("Successfully loaded data=" + jacketPages);
         return jacketPages.pages;
     }
 

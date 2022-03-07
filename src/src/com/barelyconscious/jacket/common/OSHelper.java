@@ -1,5 +1,8 @@
 package com.barelyconscious.jacket.common;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public final class OSHelper {
 
     public static class SystemNotSupportedException extends RuntimeException {
@@ -22,7 +25,7 @@ public final class OSHelper {
         if (osName == null) {
             SYSTEM_OS = SystemOS.UNKNOWN;
         } else {
-            System.out.println("Detected OS: " + osName);
+            log.debug("Detected OS: " + osName);
 
             if ("Mac OS X".equals(osName)) {
                 SYSTEM_OS = SystemOS.MAC_OS_X;
@@ -32,5 +35,8 @@ public final class OSHelper {
                 SYSTEM_OS = SystemOS.UNKNOWN;
             }
         }
+    }
+
+    private OSHelper() {
     }
 }
